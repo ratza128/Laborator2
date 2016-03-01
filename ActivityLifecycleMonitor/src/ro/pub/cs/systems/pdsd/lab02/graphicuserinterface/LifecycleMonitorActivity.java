@@ -70,7 +70,6 @@ public class LifecycleMonitorActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       
         setContentView(R.layout.activity_lifecycle_monitor);
         
         Button okButton = (Button)findViewById(R.id.ok_button);
@@ -80,8 +79,14 @@ public class LifecycleMonitorActivity extends Activity {
         
         if(savedInstanceState==null)
         Log.d(Constants.TAG, "onCreate() method was invoked first");
-        else Log.d(Constants.TAG, "onCreate() method was invoked[before]");
-    }    
+        else {Log.d(Constants.TAG, "onCreate() method was invoked[before]");
+        EditText usernameEditText = (EditText)findViewById(R.id.username_edit_text);
+		EditText passwordEditText = (EditText)findViewById(R.id.password_edit_text);
+		usernameEditText.setText(savedInstanceState.getString(Constants.USERNAME_TAG));
+		passwordEditText.setText(savedInstanceState.getString(Constants.PASSWORD_TAG));
+		
+        	}
+        }    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -121,8 +126,10 @@ public class LifecycleMonitorActivity extends Activity {
     protected void onRestoreInstanceState(Bundle savedInstanceState){
     	super.onRestoreInstanceState(savedInstanceState);
     	Log.d(Constants.TAG, "onRestoreInstanceState() method was invoked");
-    	savedInstanceState.putString(Constants.USERNAME_EDIT_TEXT,Constants.USERNAME_TAG);
-    	savedInstanceState.putString(Constants.PASSWORD_EDIT_TEXT,Constants.PASSWORD_TAG);
+    	EditText usernameEditText=(EditText)findViewById(R.id.username_edit_text);
+    	EditText passwordEditText = (EditText)findViewById(R.id.password_edit_text);
+    	savedInstanceState.putString(Constants.USERNAME_EDIT_TEXT,usernameEditText.toString());
+    	savedInstanceState.putString(Constants.PASSWORD_EDIT_TEXT,passwordEditText.toString());
     }
     
     	  @Override
