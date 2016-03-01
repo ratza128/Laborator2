@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 
@@ -32,7 +33,8 @@ public class LifecycleMonitorActivity extends Activity {
 				LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  		
 				
 				if (Utilities.allowAccess(getApplicationContext(), usernameEditText.getText().toString(), passwordEditText.getText().toString())) {
-				    View popupContent = layoutInflater.inflate(R.layout.popup_window_authentication_success, null);  
+					
+					View popupContent = layoutInflater.inflate(R.layout.popup_window_authentication_success, null);  
 				    final PopupWindow popupWindow = new PopupWindow(popupContent, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);  
 				             
 				    Button dismissButton = (Button)popupContent.findViewById(R.id.dismiss_button);
@@ -68,13 +70,17 @@ public class LifecycleMonitorActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       
         setContentView(R.layout.activity_lifecycle_monitor);
         
         Button okButton = (Button)findViewById(R.id.ok_button);
         okButton.setOnClickListener(buttonClickListener);
         Button cancelButton = (Button)findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(buttonClickListener);
-        Log.d(Constants.TAG, "onCreate() method was invoked");
+        
+        if(savedInstanceState==null)
+        Log.d(Constants.TAG, "onCreate() method was invoked first");
+        else Log.d(Constants.TAG, "onCreate() method was invoked[before]");
     }    
 
     @Override
@@ -95,4 +101,77 @@ public class LifecycleMonitorActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+   
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        // apelarea metodei din activitatea parinte este recomandata, dar nu obligatorie
+        CheckBox checkbox=(CheckBox)findViewById(R.id.remember_me_checkbox);
+        boolean check= checkbox.isChecked();
+        EditText usernameEditText = (EditText)findViewById(R.id.username_edit_text);
+		EditText passwordEditText = (EditText)findViewById(R.id.password_edit_text);
+        
+        if(check){        
+        	Log.d(Constants.TAG, "onSaveInstanceState was invoked");
+        	savedInstanceState.putString(Constants.USERNAME_TAG,usernameEditText.getText().toString() );
+        	savedInstanceState.putString(Constants.PASSWORD_TAG,passwordEditText.getText().toString() );
+            
+
+        }
+        super.onSaveInstanceState(savedInstanceState);
+    }
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+    	super.onRestoreInstanceState(savedInstanceState);
+    	Log.d(Constants.TAG, "onRestoreInstanceState() method was invoked");
+    	savedInstanceState.putString(Constants.USERNAME_EDIT_TEXT,Constants.USERNAME_TAG);
+    	savedInstanceState.putString(Constants.PASSWORD_EDIT_TEXT,Constants.PASSWORD_TAG);
+    }
+    
+    	  @Override
+    	  protected void onStart() {
+    	    super.onStart();
+    	    Log.d(Constants.TAG, "onStart() method was invoked");
+    	    // ...
+    	  }
+    	 
+    	  @Override
+    	  protected void onResume() {
+    	    super.onResume();
+    	    Log.d(Constants.TAG, "onResume() method was invoked");
+    	    
+    	    // ...
+    	  }
+    	 
+    	  @Override
+    	  protected void onPause() {
+    	    super.onPause();
+    	    Log.d(Constants.TAG, "onPause() method was invoked");
+    	    
+    	    // ...
+    	  }
+    	 
+    	  @Override
+    	  protected void onStop() {
+    	    super.onStop();
+    	    Log.d(Constants.TAG, "onStop() method was invoked");
+    	    
+    	    // ...
+    	  }
+    	 
+    	  @Override
+    	  protected void onDestroy() {
+    	    super.onDestroy();
+    	    Log.d(Constants.TAG, "onDestroy() method was invoked");
+    	    
+    	    // ...
+    	  }
+    	 
+    	  @Override
+    	  protected void onRestart() {
+    	    super.onRestart();
+    	    Log.d(Constants.TAG, "onRestart() method was invoked");
+    	    
+    	    // ...
+    	  }
+    	 
+
+    
 }
